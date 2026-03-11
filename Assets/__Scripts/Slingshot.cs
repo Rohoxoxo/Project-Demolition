@@ -5,6 +5,7 @@ using UnityEngine;
 public class Slingshot : MonoBehaviour
 {
     public GameObject projectilePrefab;
+    public GameObject projLinePrefab;
     public float velocityMult = 10f;
 
     public GameObject launchPoint;
@@ -74,8 +75,9 @@ public class Slingshot : MonoBehaviour
             projRB.velocity = -mouseDelta * velocityMult;
             FollowCam.POI = projectile;
 
+            Instantiate<GameObject>(projLinePrefab, projectile.transform);
+
             projectile = null;
         }
     }
 }
-
