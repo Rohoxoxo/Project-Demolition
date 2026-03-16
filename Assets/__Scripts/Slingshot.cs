@@ -8,6 +8,10 @@ public class Slingshot : MonoBehaviour
     public GameObject projLinePrefab;
     public float velocityMult = 10f;
 
+    public LineRenderer lineRenderer;
+    public Transform leftArm;
+    public Transform rightArm;
+
     public GameObject launchPoint;
     public Vector3 launchPos;
     public GameObject projectile;
@@ -19,6 +23,16 @@ public class Slingshot : MonoBehaviour
         launchPoint = launchPointTrans.gameObject;
         launchPoint.SetActive(false);
         launchPos = launchPointTrans.position;
+
+        lineRenderer = GetComponentInChildren<LineRenderer>();
+        leftArm = transform.Find("LeftArm");
+        rightArm = transform.Find("RightArm");
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.positionCount = 2;
+            lineRenderer.enabled = false;
+        }
     }
 
     void OnMouseEnter()
@@ -35,10 +49,14 @@ public class Slingshot : MonoBehaviour
     {
         aimingMode = true;
 
-        projectile = Instantiate(projectilePrefab) as GameObject;
+        projectile = Instantiate(projectilePrefab);
         projectile.transform.position = launchPos;
-
         projectile.GetComponent<Rigidbody>().isKinematic = true;
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.enabled = true;
+        }
     }
 
     void Update()
@@ -49,10 +67,9 @@ public class Slingshot : MonoBehaviour
         mousePos2D.z = -Camera.main.transform.position.z;
 
         Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(mousePos2D);
-
         Vector3 mouseDelta = mousePos3D - launchPos;
 
-        float maxMagnitude = this.GetComponent<SphereCollider>().radius;
+        float maxMagnitude = GetComponent<SphereCollider>().radius;
 
         if (mouseDelta.magnitude > maxMagnitude)
         {
@@ -63,12 +80,23 @@ public class Slingshot : MonoBehaviour
         Vector3 projPos = launchPos + mouseDelta;
         projectile.transform.position = projPos;
 
+        if (lineRenderer != null)
+        {
+            lineRenderer.SetPosition(0, lineRenderer.transform.InverseTransformPoint(leftArm.position));
+            lineRenderer.SetPosition(1, lineRenderer.transform.InverseTransformPoint(projectile.transform.position));
+        }
+
         if (Input.GetMouseButtonUp(0))
         {
             aimingMode = false;
 
-            Rigidbody projRB = projectile.GetComponent<Rigidbody>();
+            AudioSource audioSource = GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
 
+            Rigidbody projRB = projectile.GetComponent<Rigidbody>();
             projRB.isKinematic = false;
             projRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
             projRB.velocity = -mouseDelta * velocityMult;
@@ -76,7 +104,15 @@ public class Slingshot : MonoBehaviour
             FollowCam.SWITCH_VIEW(FollowCam.eView.slingshot);
             FollowCam.POI = projectile;
 
-            Instantiate<GameObject>(projLinePrefab, projectile.transform);
+            if (projLinePrefab != null)
+            {
+                Instantiate(projLinePrefab, projectile.transform);
+            }
+
+            if (lineRenderer != null)
+            {
+                lineRenderer.enabled = false;
+            }
 
             projectile = null;
             MissionDemolition.SHOT_FIRED();
