@@ -47,6 +47,8 @@ public class Slingshot : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (projectile != null) return;
+
         aimingMode = true;
 
         projectile = Instantiate(projectilePrefab);
@@ -61,7 +63,7 @@ public class Slingshot : MonoBehaviour
 
     void Update()
     {
-        if (!aimingMode) return;
+        if (!aimingMode || projectile == null) return;
 
         Vector3 mousePos2D = Input.mousePosition;
         mousePos2D.z = -Camera.main.transform.position.z;
