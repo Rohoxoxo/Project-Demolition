@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public enum GameMode
 {
@@ -17,12 +18,14 @@ public class MissionDemolition : MonoBehaviour
 
     public Text uitLevel;
     public Text uitShots;
+    public TMP_Text scoreText;
     public Vector3 castlePos;
     public GameObject[] castles;
 
     public int level;
     public int levelMax;
     public int shotsTaken;
+    public int score;
     public GameObject castle;
     public GameMode mode = GameMode.idle;
     public string showing = "Show Slingshot";
@@ -32,6 +35,7 @@ public class MissionDemolition : MonoBehaviour
         S = this;
         level = 0;
         shotsTaken = 0;
+        score = 0;
         levelMax = castles.Length;
         StartLevel();
     }
@@ -45,7 +49,7 @@ public class MissionDemolition : MonoBehaviour
 
         Projectile.DESTROY_PROJECTILES();
 
-        castle = Instantiate<GameObject>(castles[level]);
+        castle = Instantiate(castles[level]);
         castle.transform.position = castlePos;
 
         Goal.goalMet = false;
@@ -60,15 +64,21 @@ public class MissionDemolition : MonoBehaviour
     {
         uitLevel.text = "Level: " + (level + 1) + " of " + levelMax;
         uitShots.text = "Shots Taken: " + shotsTaken;
+
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
     }
 
     void Update()
     {
         UpdateGUI();
 
-        if ((mode == GameMode.playing) && Goal.goalMet)
+        if (mode == GameMode.playing && Goal.goalMet)
         {
             mode = GameMode.levelEnd;
+            score += 100;
             FollowCam.SWITCH_VIEW(FollowCam.eView.both);
             Invoke("NextLevel", 2f);
         }
