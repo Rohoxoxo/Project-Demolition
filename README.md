@@ -1,34 +1,46 @@
 # Project Demolition
 
-This project is a Unity game based on the Mission Demolition tutorial for CS382 Game Design, Development, and Technology.
+This project is a Unity game based on the *Mission Demolition* tutorial from Bond Chapter 30 for the course **CS382 – Game Design, Development, and Technology**.
 
 ## Unity Version
 Unity 2021.3.33f1
 
 ## Game Overview
-The player uses a slingshot to launch projectiles and destroy castle structures. The goal is to knock down all castles across multiple levels.
+The player uses a slingshot to launch projectiles and destroy castle structures. The objective is to knock down all castles across multiple levels. Each level introduces a more difficult castle design, requiring better aiming and strategy.
 
-## Features Added
-- Game Over screen
-- Play Again button
-- 4 levels with 4 different castles
-- Slingshot rubber band using Line Renderer
-- Sound effect when launching the projectile
-- Projectile trail effect
-- Level progression from easy to difficult
+## Features Implemented
+
+### Required Features
+The following features were implemented as required by the assignment:
+
+- Unity project uploaded to GitHub with the correct **Unity `.gitignore`**
+- **Game Over screen** with a **Play Again** button
+- **4 levels** with different castle structures arranged from **easy to difficult**
+- **Slingshot rubber band** implemented using a **Line Renderer**
+- **Sound effect** when the projectile is launched
+
+### Enhancements (Making the Game Cooler)
+In addition to the required features, several improvements were added to enhance gameplay and player feedback.
+
+**Score System**
+- A score system was added to reward the player for progressing through the game.
+- Each time a castle is destroyed and the player advances to the next level, the score increases by **100 points**.
+- The score is displayed on the game UI during gameplay.
+
+**Projectile Trail**
+- A visual trail follows the projectile after launch so the player can clearly see the path of the projectile.
+
+**Improved Gameplay Flow**
+- A structured progression system was implemented with increasing castle difficulty.
+- The Game Over screen provides a clean end to the game with the option to restart.
 
 ## How to Play
-- Click and drag the projectile on the slingshot
-- Pull back to aim
-- Release to launch
-- Destroy the castle to move to the next level
-- After finishing all levels, the Game Over screen appears
-- Press Play Again to restart the game
+1. Move the mouse over the slingshot.
+2. Click and drag the projectile backwards to aim.
+3. Release the mouse to launch the projectile.
+4. Destroy the castle to move to the next level.
+5. Each level increases in difficulty.
+6. After clearing all levels, a **Game Over screen** appears.
+7. Click **Play Again** to restart the game.
 
-## Project Structure
-- Assets
-- Packages
-- ProjectSettings
-
-## Submission Notes
-This project was completed for a CS382 course assignment using the Mission Demolition tutorial as the base and then extended with required assignment features.
+## Repository Structure
